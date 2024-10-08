@@ -1,0 +1,47 @@
+name: 'book-store'
+services:
+  catalog-db:
+    image: postgres:latest
+    container_name: catalog-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "15432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+
+
+
+
+
+
+#What Happens When You Run This Configuration:
+#Container Creation:
+#  The docker-compose up -d command (in detached mode -d) will create and start a container based on the services configuration in the YAML file.
+#  Specifically, it will create a new container for the catalog-db service using the postgres:latest image. The container_name will be explicitly set as catalog-db.
+#Image:
+#  If the postgres:latest image is not already present on your machine, Docker will pull it from the Docker Hub (or another specified registry).
+#  Once pulled (if necessary), it will create the container from this image.
+#Container Name:
+#  The container will be named catalog-db as defined by the container_name directive. This avoids auto-generated names like projectname_servicename_1.
+#Environment Variables:
+#  The environment variables POSTGRES_USER, POSTGRES_PASSWORD, and POSTGRES_DB will be passed to the container, setting up the PostgreSQL database inside the container with these credentials.
+#Port Mapping:
+#  The ports section maps port 5432 on the container to port 5432 on your local machine, allowing you to connect to the PostgreSQL service running inside the container using localhost:5432.
+#Healthcheck:
+#  The healthcheck ensures that the PostgreSQL service inside the container is up and running by using pg_isready to check the service’s readiness. Docker Compose will wait for the health check to pass before marking the service as healthy.
+#Resource Limits:
+#  The deploy.resources.limits.memory configuration limits the container's memory usage to 500 MB. This is useful for controlling the resources used by the container.
+#Outcome:
+#  Running this configuration will result in the creation and startup of a new PostgreSQL container (catalog-db). You can manage and interact with this container using Docker commands or Docker Compose commands like docker-compose down to stop and remove it.
+#
